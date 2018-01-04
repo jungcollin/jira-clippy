@@ -14,19 +14,9 @@ chrome.tabs.query({
 }, function(tabs) {
   var tab = tabs[0];
 
-  // Remove the querystring
+  // url, title
   var url = tab.url.split('?')[0];
-
-  // Remove the project name at the end of the title
-  var title = tab.title.split(' - ');
-  title.pop();
-  title = title.join(' - ');
-
-  // Format: XXX-999 - Description
-  var split = title.match(/^\[(.+)\](.+)/);
-  title = split[1] + ' -' + split[2];
-
-  var combine = title + '\n\n' + url;
-
-  doCopy(combine);
+  var title = tab.title.split(' - ')[0].split(']');
+  title = (title.length > 2)? title[1] + ']' + title[2] : title[1];
+  doCopy(`${title}(${url})`);
 });
